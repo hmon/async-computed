@@ -1,4 +1,4 @@
-type Handler<T> = (value: T) => void
+type Handler<T> = (value: T) => Promise<any>
 
 export default class PromiseQueue<T> {
   private list: Promise<T>[] = []
@@ -9,12 +9,11 @@ export default class PromiseQueue<T> {
   private async loop () {
     const head = this.list.shift()
     if (head === undefined) return
+
     try {
-      const value = await head
-      this.handler(Promise.resolve(value))
-    } catch (e) {
-      this.handler(Promise.reject(e))
-    }
+      await this.handler(head)
+    } catch (e) {}
+
     return this.loop()
   }
 

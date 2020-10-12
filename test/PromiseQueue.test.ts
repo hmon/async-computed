@@ -1,12 +1,5 @@
 import PromiseQueue from '../src/PromiseQueue'
-
-function resolveAfter (value: any, ms: number) {
-  return () => new Promise(resolve => {
-    setTimeout(() => {
-      resolve(value)
-    }, ms)
-  })
-}
+import { resolveAfter } from './helpers'
 
 test('should call handler once', async () => {
   const handler = jest.fn().mockImplementation(value => value)
