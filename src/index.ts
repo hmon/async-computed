@@ -36,6 +36,7 @@ function asyncComputed<T = any, U = null> (getterOrOption: AsyncGetter<T> | Opti
   const state = ref<any>(defaultValue)
 
   // Make handler Computed to track dependencies
+  // It's also lazy
   const computedRef = computed(getter)
 
   // Use promise queue to execute in order
@@ -53,7 +54,7 @@ function asyncComputed<T = any, U = null> (getterOrOption: AsyncGetter<T> | Opti
     return state.value
   })
   comp.retry = () => {
-    queue.push(computedRef.effect.raw())
+    queue.push(getter())
   }
 
   return comp
